@@ -1,0 +1,36 @@
+﻿@model IEnumerable<DMS.Models.Category>
+
+@{
+    ViewData["Title"] = "My Categories";
+}
+
+<h1>My Categories</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Create Category</a>
+</p>
+
+@if (!Model.Any())
+{
+    <p>You haven't created any categories yet.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Created</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var category in Model)
+            {
+                <tr>
+                    <td>@category.Name</td>
+                    <td>@category.CreatedUtc.ToLocalTime().ToString("g")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

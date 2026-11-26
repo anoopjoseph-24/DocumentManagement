@@ -1,0 +1,50 @@
+﻿@model IEnumerable<DMS.Models.Document>
+
+@{
+    ViewData["Title"] = "My Documents";
+}
+
+<h1>My Documents</h1>
+
+<form asp-action="Index" method="get" class="mb-3">
+    <div class="input-group">
+        <input name="search" value="@ViewBag.Search"
+               class="form-control" placeholder="Search file names" />
+        <button type="submit" class="btn btn-outline-primary">Search</button>
+        <a asp-action="Index" class="btn btn-outline-secondary">Clear</a>
+    </div>
+</form>
+
+<p><a asp-action="Upload" class="btn btn-primary">Upload Document</a></p>
+
+@if (!Model.Any())
+{
+    <p>You haven't uploaded any documents yet.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>File name</th>
+                <th>Uploaded</th>
+                <th>Size</th>
+                <th>Download</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var document in Model)
+            {
+                <tr>
+                    <td>@document.OriginalFileName</td>
+                    <td>@document.UploadedUtc.ToLocalTime().ToString("g")</td>
+                    <td>@($"{document.SizeBytes / 1024.0:N0} KB")</td>
+                    <td>
+                        <a asp-action="Download"
+                           asp-route-id="@document.Id">Download</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
